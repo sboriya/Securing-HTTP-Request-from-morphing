@@ -1,0 +1,13 @@
+if (typeof CryptoJS === 'undefined') {
+    var CryptoJS = require('crypto-js');
+}
+
+const requestBody = pm.request.body.raw;
+
+const requestBodyString = JSON.stringify(requestBody);
+
+const salt = 'its_my_secure_salt_@123';
+
+const hash =CryptoJS.HmacSHA256(requestBodyString, salt).toString(CryptoJS.enc.Base64);
+
+pm.request.headers.add({key: 'X-Request-Hash', value: hash});
